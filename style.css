@@ -1,0 +1,507 @@
+/* --- Global Styles & Variables --- */
+:root {
+    --primary-color: #ef5350; /* Pokemon Red */
+    --secondary-color: #2a75bb; /* Pokemon Blue */
+    --accent-color: #ffcb05; /* Pokemon Yellow */
+    --success-color: #4CAF50; /* Green for collected */
+    --light-gray: #f8f9fa;
+    --medium-gray: #dee2e6;
+    --dark-gray: #495057;
+    --text-color: #212529;
+    --bg-color: #fff;
+    --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    --card-hover-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    --border-radius: 8px;
+    --transition-speed: 0.3s;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    background-color: var(--light-gray);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* --- Header --- */
+header {
+    background: linear-gradient(135deg, var(--primary-color), #d62828); /* Gradient */
+    color: white;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+header h1 {
+    margin: 0 0 0.75rem 0;
+    font-weight: 700;
+}
+
+header nav {
+    margin-top: 0.5rem;
+}
+
+header label {
+    margin-right: 0.5rem;
+    font-weight: 600;
+}
+
+header select {
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: var(--border-radius);
+    background-color: rgba(255, 255, 255, 0.9);
+    color: var(--dark-gray);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    cursor: pointer;
+    min-width: 250px; /* Give it some base width */
+    appearance: none; /* Remove default system appearance */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%23495057" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>'); /* Custom arrow */
+    background-repeat: no-repeat;
+    background-position: right 0.7rem center;
+    background-size: 1em;
+    padding-right: 2.5rem; /* Space for the arrow */
+}
+
+header select:focus {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+
+/* --- Main Content Area --- */
+main {
+    max-width: 1400px; /* Wider max-width for modern layouts */
+    margin: 2rem auto;
+    padding: 1.5rem 2rem; /* More padding */
+    background-color: var(--bg-color);
+    box-shadow: 0 0 20px rgba(0,0,0,0.08);
+    border-radius: var(--border-radius);
+}
+
+.set-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--medium-gray);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.set-header h2 {
+    margin-bottom: 0.5rem;
+    font-size: 2rem; /* Larger heading */
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.set-header p {
+    margin-top: 0;
+    color: var(--dark-gray);
+    font-size: 0.9rem;
+}
+
+/* --- Controls (Progress & Export) --- */
+.controls {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem; /* Increased gap */
+    width: 100%; /* Take full width for better centering */
+}
+
+#progress {
+    font-weight: 600;
+    background-color: var(--light-gray);
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    color: var(--dark-gray);
+    font-size: 0.95rem;
+}
+
+.button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem; /* Larger padding */
+    background-color: var(--secondary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    font-size: 1rem; /* Slightly larger font */
+    font-weight: 600;
+    transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    cursor: pointer; /* Ensure buttons look clickable */
+    border: none; /* Reset default button border */
+}
+
+.button:hover {
+    background-color: #1e5a97; /* Darker blue */
+    transform: translateY(-2px); /* Subtle lift */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* --- Card Grid --- */
+.card-grid {
+    display: grid;
+    /* More responsive grid: smaller cards on small screens, larger on wider */
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Adjusted minmax */
+    gap: 1.5rem; /* Increased gap */
+    justify-content: center;
+    min-height: 200px; /* Ensure grid has height even when empty/loading */
+    position: relative; /* Needed for loader positioning */
+}
+
+.card-grid .placeholder-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--dark-gray);
+    font-size: 1.1rem;
+    /* Ensure it's behind cards if they overlap during weird loading states */
+    z-index: 0;
+    text-align: center;
+    width: 80%;
+}
+
+/* --- Card Styling --- */
+.card {
+    position: relative;
+    cursor: pointer;
+    border: 3px solid transparent; /* Border placeholder for smooth transition */
+    border-radius: 10px; /* Slightly more rounded */
+    overflow: hidden; /* Ensure border radius clips image */
+    background-color: #fff; /* Card background */
+    box-shadow: var(--card-shadow);
+    /* --- Visibility Change START --- */
+    opacity: 0.40; /* Default state: slightly greyed out (Adjust 0.7-0.8 as preferred) */
+    transition: transform var(--transition-speed) ease,
+                box-shadow var(--transition-speed) ease,
+                border-color var(--transition-speed) ease,
+                opacity var(--transition-speed) ease; /* ADDED opacity to transition */
+    /* --- Visibility Change END --- */
+}
+
+.card img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 7px; /* Inner radius, slightly smaller than card */
+}
+
+.card:hover {
+    transform: translateY(-5px) scale(1.03); /* Lift and slightly scale */
+    box-shadow: var(--card-hover-shadow);
+    /* --- Visibility Change START --- */
+    opacity: 1; /* Make fully visible on hover */
+    /* --- Visibility Change END --- */
+    z-index: 5; /* Bring hovered card slightly above others */
+}
+
+.card.collected {
+    border-color: var(--success-color);
+    box-shadow: 0 0 12px rgba(76, 175, 80, 0.5); /* Softer glow */
+    /* --- Visibility Change START --- */
+    opacity: 1; /* Make collected cards fully visible */
+    /* --- Visibility Change END --- */
+}
+
+/* This rule might not be strictly necessary if .card:hover already sets opacity to 1,
+   but it doesn't hurt to be explicit */
+.card.collected:hover {
+    opacity: 1; /* Ensure opacity stays 1 */
+    /* other hover effects are inherited */
+}
+
+.card.collected img {
+    /* Removed opacity change here - handled by card opacity now */
+}
+
+.card.collected::after {
+    content: '✔';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    color: white;
+    background-color: var(--success-color); /* Use variable */
+    border-radius: 50%;
+    width: 24px; /* Slightly larger */
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    z-index: 1; /* Ensure it's above the image */
+}
+
+/* --- Loading Animation --- */
+.loader-container {
+    position: absolute; /* Position relative to card-grid */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex; /* Use flex to center loader */
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent overlay */
+    z-index: 10; /* Above potential card elements during load */
+    /* display: none; /* Hidden/shown by JavaScript */
+    min-height: 200px; /* Match grid min-height */
+}
+
+.loader {
+    border: 6px solid var(--light-gray); /* Light grey track */
+    border-top: 6px solid var(--primary-color); /* Red spinner part */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* --- Footer --- */
+footer {
+    text-align: center;
+    margin-top: 3rem;
+    padding: 1.5rem;
+    font-size: 0.9em;
+    color: #777;
+    border-top: 1px solid var(--medium-gray);
+}
+
+footer a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* --- Export Modal Styles --- */
+.modal {
+    /* display: none; */ /* Managed by JS, starts hidden via JS */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.6); /* Black w/ opacity */
+    /* Use Flexbox to center content */
+    display: flex; /* Set to flex */
+    justify-content: center;
+    align-items: center;
+    padding: 1rem; /* Padding for smaller screens */
+}
+
+.modal-content {
+    background-color: var(--bg-color);
+    margin: auto; /* Auto margin helps centering with flex */
+    padding: 2rem 2.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    max-width: 650px; /* Adjust max width as needed */
+    width: 90%; /* Responsive width */
+    position: relative;
+    animation: fadeInModal 0.3s ease-out; /* Simple fade-in animation */
+}
+
+@keyframes fadeInModal {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+/* Optional fade out - ensure JS matches timing */
+@keyframes fadeOutModal {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 0; transform: scale(0.95); }
+}
+
+
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: var(--dark-gray);
+    font-size: 2rem; /* Larger close button */
+    font-weight: bold;
+    line-height: 1;
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 0.5rem; /* Easier click target */
+}
+
+.modal-close:hover,
+.modal-close:focus {
+    color: var(--primary-color);
+    text-decoration: none;
+    outline: none;
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.modal-content p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+    color: var(--dark-gray);
+}
+.modal-content ul {
+    margin-bottom: 1rem;
+    padding-left: 20px;
+    color: var(--dark-gray);
+}
+.modal-content li {
+    margin-bottom: 0.5rem;
+}
+
+.modal-content strong#modal-set-name {
+    color: var(--secondary-color); /* Highlight set name */
+    font-weight: 600;
+}
+
+.url-container {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+.url-container label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+#export-url-display {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--medium-gray);
+    background-color: var(--light-gray);
+    font-family: 'Courier New', Courier, monospace; /* Monospace for URL */
+    font-size: 0.9rem;
+    color: var(--dark-gray);
+    border-radius: calc(var(--border-radius) / 2);
+    box-sizing: border-box; /* Include padding and border in element's total width/height */
+    word-wrap: break-word; /* Allow long URLs to wrap */
+    overflow-x: auto; /* Add horizontal scroll if needed */
+    /* Prevent user selection causing confusion with copy button */
+    user-select: none; /* Standard */
+   -webkit-user-select: none; /* Safari */
+   -moz-user-select: none; /* Firefox */
+   -ms-user-select: none; /* IE10+/Edge */
+}
+
+.modal-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap; /* Allow buttons to wrap on small screens */
+    justify-content: flex-end; /* Align buttons to the right */
+}
+
+.modal-button {
+    /* Inherits .button styles */
+    padding: 0.6rem 1.2rem; /* Slightly smaller padding */
+    font-size: 0.95rem;
+    display: inline-flex; /* Align icon and text */
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-button.secondary {
+    background-color: #6c757d; /* Bootstrap secondary grey */
+    color: white;
+}
+
+.modal-button.secondary:hover {
+    background-color: #5a6268; /* Darker grey */
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Style for feedback after copying */
+#copy-url-button.copied {
+    background-color: var(--success-color);
+    cursor: default;
+}
+#copy-url-button.copied:hover {
+     transform: none; /* Disable hover lift when copied */
+     background-color: var(--success-color); /* Keep green on hover */
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    main {
+        padding: 1rem;
+        margin: 1rem;
+    }
+
+    header select {
+        min-width: auto; /* Allow select to shrink */
+        width: 90%; /* Take most of width */
+    }
+
+    .card-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Smaller cards on mobile */
+        gap: 1rem;
+    }
+
+    .set-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .button { /* Base button adjustments for mobile */
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+    }
+
+     .modal-content {
+        padding: 1.5rem;
+        width: 95%;
+    }
+     .modal-actions {
+        justify-content: center; /* Center buttons on small screens */
+    }
+     .modal-button {
+        width: 100%; /* Make modal buttons full width */
+        margin-bottom: 0.5rem; /* Add space between stacked buttons */
+    }
+     .modal-button:last-child {
+        margin-bottom: 0;
+    }
+
+}
+
+@media (max-width: 480px) {
+     .card-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Even smaller cards */
+        gap: 0.8rem;
+    }
+     .set-header h2 {
+        font-size: 1.3rem;
+    }
+     .modal-content {
+        padding: 1rem 1.2rem;
+    }
+     .modal-content h2 {
+        font-size: 1.4rem;
+    }
+     #export-url-display {
+        font-size: 0.8rem;
+    }
+}

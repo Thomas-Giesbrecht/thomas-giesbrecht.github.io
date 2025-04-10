@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon TCG Collection Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Pokémon TCG Collection Tracker</h1>
+        <nav>
+            <label for="set-select">Select Set:</label>
+            <select id="set-select">
+                <option value="">Loading sets...</option>
+            </select>
+        </nav>
+    </header>
+
+    <main>
+        <div class="set-header">
+            <h2 id="set-name">Select a set</h2>
+            <p id="set-info"></p>
+            <div class="controls">
+                 <div id="progress">Collected: <span id="collected-count">0</span> / <span id="total-count">0</span> (<span id="percentage">0</span>%)</div>
+                 <a id="export-link" href="#" class="button">Export Collection</a>
+            </div>
+        </div>
+        <div id="card-grid" class="card-grid">
+            <div class="loader-container" id="loader">
+                <div class="loader"></div>
+            </div>
+            <p class="placeholder-text">Please select a set from the dropdown menu.</p>
+            </div>
+
+        <div id="export-modal" class="modal">
+            <div class="modal-content">
+                <button id="modal-close-button" class="modal-close" aria-label="Close modal">&times;</button>
+                <h2>Export Collection Link</h2>
+                <p>This unique URL contains your collected cards for the current set (<strong id="modal-set-name"></strong>). You can:</p>
+                <ul>
+                    <li>Bookmark it to save your progress.</li>
+                    <li>Share it with others.</li>
+                    <li>Use it as a backup.</li>
+                </ul>
+                <p>Opening this link later will automatically load your collection for this set.</p>
+
+                <div class="url-container">
+                    <label for="export-url-display">Generated URL:</label>
+                    <input type="text" id="export-url-display" readonly>
+                </div>
+
+                <div class="modal-actions">
+                    <button id="copy-url-button" class="button modal-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: middle; margin-right: 5px;">
+                          <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                          <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                        Copy URL
+                    </button>
+                    <a id="open-url-button" href="#" target="_blank" rel="noopener noreferrer" class="button modal-button secondary">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" style="vertical-align: middle; margin-right: 5px;" viewBox="0 0 16 16">
+                          <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/>
+                          <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/>
+                        </svg>
+                        Open in New Tab
+                    </a>
+                </div>
+            </div>
+        </div>
+        </main>
+
+    <footer>
+        <p>Data & images provided by <a href="https://pokemontcg.io/" target="_blank" rel="noopener noreferrer">pokemontcg.io</a></p>
+    </footer>
+
+    <script src="lib/pako.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
